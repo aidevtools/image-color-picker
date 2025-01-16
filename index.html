@@ -1,74 +1,42 @@
-<!DOCTYPE html>
+<!DOCTYPE html> 
 <html lang="en">
-<head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Sample Webpage</title>
-  <style>
-    body {
-      font-family: Arial, sans-serif;
-      margin: 0;
-      padding: 0;
-      background-color: #f4f4f4;
-      color: #333;
-    }
-    header {
-      background-color: #007bff;
-      color: #fff;
-      padding: 1rem;
-      text-align: center;
-    }
-    nav {
-      background-color: #333;
-      overflow: hidden;
-    }
-    nav a {
-      float: left;
-      display: block;
-      color: #fff;
-      text-align: center;
-      padding: 1rem;
-      text-decoration: none;
-    }
-    nav a:hover {
-      background-color: #575757;
-    }
-    main {
-      padding: 2rem;
-      text-align: center;
-    }
-    footer {
-      background-color: #007bff;
-      color: white;
-      text-align: center;
-      padding: 1rem;
-      position: fixed;
-      bottom: 0;
-      width: 100%;
-    }
-  </style>
-</head>
-<body>
-  <header>
-    <h1>Welcome to My Sample Webpage</h1>
-    <p>Learning HTML is fun!</p>
-  </header>
-
-  <nav>
-    <a href="#home">Home</a>
-    <a href="#about">About</a>
-    <a href="#services">Services</a>
-    <a href="#contact">Contact</a>
-  </nav>
-
-  <main>
-    <h2>About This Page</h2>
-    <p>This is a simple webpage created to demonstrate HTML and CSS.</p>
-  </main>
-
-  <footer>
-    <p>&copy; 2025 My Sample Webpage. All rights reserved.</p>
-  </footer>
-</body>
+   <head>
+      <meta charset="UTF-8">
+      <meta name="viewport" content="width=device-width, initial-scale=1.0">
+      <meta name="description" content="Pick a color from any image you upload and get the hex value instantly.">
+      <meta name="keywords" content="image color picker, color picker tool, pick color from image, color hex code">
+      <meta name="author" content="Animesh Manna">
+      <title>Image Color Picker Online</title>
+      <link rel="icon" href="favicon.ico">
+      <script src="https://cdn.tailwindcss.com"></script> 
+   </head>
+   <body class="bg-gray-100">
+      <!-- Header Section -->   
+      <header class="bg-gray-800 text-white p-4 text-center">
+         <h1 class="text-3xl font-bold"> Image Color Picker </h1>
+         <p class="text-xl">Upload an image and pick any color from it to get its hex value!</p>
+      </header>
+      <!-- Main Content Section -->   
+      <main class="max-w-md mx-auto mt-10 p-6 bg-white rounded-xl shadow-lg">
+         <!-- Image upload section -->     
+         <div>       <input type="file" id="image-upload" class="block w-full mb-4 p-2 bg-gray-100 border border-gray-300 rounded-lg" />     </div>
+         <!-- Image section -->     
+         <div class="relative">
+            <img id="image" src="" alt="Upload an image" class="w-full h-auto rounded-lg shadow-lg hidden" />       
+            <div id="color-picker" class="absolute top-0 left-0 w-full h-full cursor-pointer hidden"></div>
+         </div>
+         <!-- Color Display Section -->     
+         <div class="mt-4">
+            <p class="font-semibold text-lg">Selected Color:</p>
+            <div id="color-display" class="w-16 h-16 rounded-full border-2 border-gray-300"></div>
+            <p id="hex-value" class="mt-2 text-sm font-medium text-gray-600"></p>
+            <button id="copy-color" class="mt-2 px-4 py-2 bg-blue-500 text-white rounded-lg hover:bg-blue-600 focus:outline-none">         Copy Color       </button>     
+         </div>
+      </main>
+      <!-- Footer Section -->   
+      <footer class="bg-gray-800 text-white text-center py-4 mt-10">
+         <p>&copy; 2025 Image Color Picker. All rights reserved.</p>
+      </footer>
+      <script>     const image = document.getElementById('image');     const colorPicker = document.getElementById('color-picker');     const colorDisplay = document.getElementById('color-display');     const hexValue = document.getElementById('hex-value');     const imageUpload = document.getElementById('image-upload');     const copyButton = document.getElementById('copy-color');     // Handle image upload     imageUpload.addEventListener('change', function(e) {       const file = e.target.files[0];       if (file) {         const reader = new FileReader();         reader.onload = function(event) {           image.src = event.target.result;           image.classList.remove('hidden');           colorPicker.classList.remove('hidden');         };         reader.readAsDataURL(file);       }     });     // Handle color picking on image click     colorPicker.addEventListener('click', function(e) {       const rect = image.getBoundingClientRect();       const x = e.clientX - rect.left;       const y = e.clientY - rect.top;       const canvas = document.createElement('canvas');       const ctx = canvas.getContext('2d');       canvas.width = image.width;       canvas.height = image.height;       ctx.drawImage(image, 0, 0, image.width, image.height);       const pixel = ctx.getImageData(x, y, 1, 1).data;       const color = `rgb(${pixel[0]}, ${pixel[1]}, ${pixel[2]})`;       colorDisplay.style.backgroundColor = color;       hexValue.textContent = rgbToHex(pixel[0], pixel[1], pixel[2]);     });     // Convert RGB to HEX format     function rgbToHex(r, g, b) {       return `#${((1 << 24) + (r << 16) + (g << 8) + b).toString(16).slice(1).toUpperCase()}`;     }     // Copy color to clipboard     copyButton.addEventListener('click', function() {       const hex = hexValue.textContent;       if (hex) {         navigator.clipboard.writeText(hex).then(function() {           alert(`Color ${hex} copied to clipboard!`);         }).catch(function(err) {           console.error('Could not copy text: ', err);         });       }     });   </script> 
+   </body>
 </html>
-    
